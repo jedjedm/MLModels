@@ -33,12 +33,16 @@ def normalEquation(X, y):
 
 def main():
     df = fetch_california_housing(as_frame=True)
+    # Convert to numpy arrays
     X = df.data.to_numpy()
     y = df.target.to_numpy()
+
+    # Run Linear Regression
     theta = linearRegression(X, y)
     skTheta = LinearRegression().fit(df.data.to_numpy(), df.target.to_numpy())
-    skTheta = np.insert(skTheta.coef_, 0, skTheta.intercept_)
+    skTheta = np.insert(skTheta.coef_, 0, skTheta.intercept_) # adds intercept term
     X_bias = np.insert(X, 0, np.ones(X.shape[0]), axis=1)  # adding column of ones for the bias variable
+
     print('My implementation\'s parameters:', theta)
     print('MSE of my implementation: ', mean_squared_error(y, np.matmul(X_bias, skTheta)))
     print('skLearn\'s implementation\'s parameters:',skTheta)
