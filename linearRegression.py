@@ -10,7 +10,7 @@ from sklearn.datasets import fetch_california_housing
 from scipy import optimize as op
 from sklearn.datasets import make_regression
 def linearRegression(X, y):
-    m, n = X.shape # m = number of examples, n = number of features
+    m, n = X.shape # m = number of examples, n = number of features, not including bias
     theta_ini = np.zeros(n + 1) # theta_0 is the bias variable
     theta_ini[0] = 1 # convention is that theta_0 = 1
     X_bias = np.insert(X, 0, np.ones(X.shape[0]), axis=1) # adding column of ones for the bias variable
@@ -25,7 +25,7 @@ def linearRegression(X, y):
     return theta
 
 def costFunction(theta, X, y, lambda_=0.0):
-    m,n = X.shape
+    m = X.shape[0]
     return (np.sum(np.square(np.matmul(X, theta) - y)) + lambda_ * np.sum(np.square(theta[1:])))/(2*m)
 
 def normalEquation(X, y):
