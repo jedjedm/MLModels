@@ -18,11 +18,18 @@ def linearRegression(X, y):
     # gradient descent
     # method 'BFGS' returns parameters closest to sklearn's
     theta = op.minimize(costFunction, theta_ini, (X_bias,y), method='BFGS').x
+
+    # Parameters could also be computed with the normal equation:
+    # theta = normalEquation(X_bias, y)
+
     return theta
 
 def costFunction(theta, X, y, lambda_=0.0):
     m,n = X.shape
     return (np.sum(np.square(np.matmul(X, theta) - y)) + lambda_ * np.sum(np.square(theta[1:])))/(2*m)
+
+def normalEquation(X, y):
+    return np.matmul((np.linalg.inv(np.matmul(X.T, X))), (np.matmul(X.T, y)))
 
 def main():
     df = fetch_california_housing(as_frame=True)
