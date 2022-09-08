@@ -4,6 +4,7 @@ from palmerpenguins import load_penguins
 from sklearn.linear_model import LogisticRegression
 from scipy.special import expit
 from scipy import optimize as op
+from sklearn.metrics import accuracy_score
 
 def logisticRegression(X, y, classes):
     m, n = X.shape  # m = number of examples, n = number of features, not including bias
@@ -29,6 +30,21 @@ def costFunction(theta, X, y, lambda_=0.0):
     cost = -1*(leftOp + rightOp) / m
     return cost
 
+def predict(dict, X, classes):
+    preds = []
+    X_bias = np.insert(X, 0, np.ones(X.shape[0]), axis=1)  # adding column of ones for the bias variable
+    for i in range(X.shape[0]):
+        pred = ''
+        predProb = -1 * np.inf
+        for currClass in classes:
+            currPredProb = np.dot(dict[currClass], X_bias[i])
+            if(currPredProb > predProb):
+                pred = currClass
+                predProb = currPredProb
+        preds.append(pred)
+    return preds
+
+# TODO: Add training set and test set
 def main():
     df = load_penguins()
     # Data cleaning:
@@ -44,6 +60,8 @@ def main():
     y = target.to_numpy()
     y = y.reshape(y.shape[0])
     species = np.unique(y)
+    print(y.shape)
+    print(X.shape)
 
     theta = logisticRegression(X, y, species)
     model =  LogisticRegression(max_iter=1000).fit(X,y)
@@ -51,7 +69,9 @@ def main():
     # print(model.coef_)
     # print(model.intercept_)
     skTheta = np.insert(model.coef_, 0, model.intercept_, axis=1)
-    print(theta)
-    print(skTheta)
+    # print(theta)
+    # print(skTheta)
+    predictions = predict(theta, X, species)
+    print(predictions)
 if __name__ == "__main__":
     main()

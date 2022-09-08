@@ -31,6 +31,7 @@ def costFunction(theta, X, y, lambda_=0.0):
 def normalEquation(X, y):
     return np.matmul((np.linalg.inv(np.matmul(X.T, X))), (np.matmul(X.T, y)))
 
+# TODO: Add training set and test set
 def main():
     df = fetch_california_housing(as_frame=True)
     # Convert to numpy arrays
